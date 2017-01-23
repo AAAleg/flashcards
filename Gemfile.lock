@@ -259,3 +259,9 @@ DEPENDENCIES
   sorcery
   uglifier (>= 1.3.0)
   whenever
+
+RUBY VERSION
+   ruby 2.1.4p265
+
+BUNDLED WITH
+   1.14.1
