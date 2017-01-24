@@ -1,7 +1,6 @@
 == README
 
-{<img src="https://travis-ci.org/elavretskiy/flashcards.svg?branch=seventh-task"
-alt="Build Status" />}[https://travis-ci.org/elavretskiy/flashcards]
+{<img src="https://travis-ci.org/AAAleg/flashcards.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/AAAleg/flashcards]
 
 {<img src="https://codeclimate.com/github/AAAleg/flashcards/badges/gpa.svg" />}[https://codeclimate.com/github/AAAleg/flashcards]
 
