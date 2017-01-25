@@ -1,52 +1,34 @@
 require 'rails_helper'
+require 'support/helpers/card_helper.rb'
+include CardHelper
 
 describe Card do
   it 'create card with empty original text' do
-    card = Card.create(original_text: '', translated_text: 'house', user_id: 1,
-                       block_id: 1)
-    expect(card.errors[:original_text]).to include('Необходимо заполнить поле.')
+    errors_cheking('', 'house', 1, 1, :original_text, 'Необходимо заполнить поле.')
   end
 
   it 'create card with empty translated text' do
-    card = Card.create(original_text: 'дом', translated_text: '', user_id: 1,
-                       block_id: 1)
-    expect(card.errors[:translated_text]).
-        to include('Необходимо заполнить поле.')
+    errors_cheking('дом', '', 1, 1, :translated_text, 'Необходимо заполнить поле.')
   end
 
   it 'create card with empty texts' do
-    card = Card.create(original_text: '', translated_text: '', user_id: 1,
-                       block_id: 1)
-    expect(card.errors[:original_text]).
-        to include('Вводимые значения должны отличаться.')
+    errors_cheking('', '', 1, 1, :original_text, 'Вводимые значения должны отличаться.')
   end
 
   it 'equal_texts Eng' do
-    card = Card.create(original_text: 'house', translated_text: 'house',
-                       user_id: 1, block_id: 1)
-    expect(card.errors[:original_text]).
-        to include('Вводимые значения должны отличаться.')
+    errors_cheking('house', 'house', 1, 1, :original_text, 'Вводимые значения должны отличаться.')
   end
 
   it 'equal_texts Rus' do
-    card = Card.create(original_text: 'дом', translated_text: 'дом', user_id: 1,
-                       block_id: 1)
-    expect(card.errors[:original_text]).
-        to include('Вводимые значения должны отличаться.')
+    errors_cheking('дом', 'дом', 1, 1, :original_text, 'Вводимые значения должны отличаться.')
   end
 
   it 'full_downcase Eng' do
-    card = Card.create(original_text: 'hOuse', translated_text: 'houSe',
-                       user_id: 1, block_id: 1)
-    expect(card.errors[:original_text]).
-        to include('Вводимые значения должны отличаться.')
+    errors_cheking('hOuse', 'houSe', 1, 1, :original_text, 'Вводимые значения должны отличаться.')
   end
 
   it 'full_downcase Rus' do
-    card = Card.create(original_text: 'Дом', translated_text: 'доМ', user_id: 1,
-                       block_id: 1)
-    expect(card.errors[:original_text]).
-        to include('Вводимые значения должны отличаться.')
+    errors_cheking('Дом', 'доМ', 1, 1, :original_text, 'Вводимые значения должны отличаться.')
   end
 
   it 'create card original_text OK' do
