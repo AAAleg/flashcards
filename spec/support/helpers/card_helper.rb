@@ -1,7 +1,10 @@
-module CardHelper
-  def errors_cheking(original_text, translated_text, user_id, block_id, text, message)
-    card = Card.create(original_text: original_text, translated_text: translated_text, 
-                       user_id: user_id, block_id: block_id)
+module CardHelper 
+  def errors_cheking(card, text, message)
     expect(card.errors[text]).to include(message)
+  end
+
+  def check_translation(card, translation, param, result)
+    check_result = card.check_translation(translation)
+    expect(check_result[param]).to be result
   end
 end
