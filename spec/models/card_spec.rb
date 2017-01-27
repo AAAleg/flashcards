@@ -4,146 +4,95 @@ include CardHelper
 
 describe Card do
   it 'create card with empty original text' do
-    errors_cheking(Card.create(original_text: '', translated_text: 'house', 
-                               user_id: 1, block_id: 1), :original_text, 'Необходимо заполнить поле.')
+    expect { create(:card, :with_empty_original_text) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it 'create card with empty translated text' do
-    errors_cheking(Card.create(original_text: 'дом', translated_text: '', 
-                               user_id: 1, block_id: 1, :translated_text, 'Необходимо заполнить поле.')
+    expect { create(:card, :with_empty_translated_text) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it 'create card with empty texts' do
-    errors_cheking(Card.create(original_text: '', translated_text: '', 
-                               user_id: 1, block_id: 1, :original_text, 'Вводимые значения должны отличаться.')
+    expect { create(:card, :with_empty_texts) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it 'equal_texts Eng' do
-    errors_cheking(Card.create(original_text: 'house', translated_text: 'house', 
-                               user_id: 1, block_id: 1, :original_text, 'Вводимые значения должны отличаться.')
+    expect { create(:card, :with_equal_texts_eng) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it 'equal_texts Rus' do
-    errors_cheking(Card.create(original_text: 'дом', translated_text: 'дом', 
-                               user_id: 1, block_id: 1, :original_text, 'Вводимые значения должны отличаться.')
+    expect { create(:card, :with_equal_texts_rus) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it 'full_downcase Eng' do
-    errors_cheking(Card.create(original_text: 'hOuse', translated_text: 'houSe', 
-                               user_id: 1, block_id: 1, :original_text, 'Вводимые значения должны отличаться.')
+    expect { create(:card, :full_downcase_eng) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it 'full_downcase Rus' do
-    errors_cheking(Card.create(original_text: 'Дом', translated_text: 'доМ', 
-                               user_id: 1, block_id: 1, :original_text, 'Вводимые значения должны отличаться.')
+    expect { create(:card, :full_downcase_rus) }.to raise_error(ActiveRecord::RecordInvalid)
+  end
+
+  it 'create card without user_id' do
+    expect { create(:card, :without_user_id) }.to raise_error(ActiveRecord::RecordInvalid)
+  end
+
+  it 'create card witout block_id' do
+    expect { create(:card, :without_block_id) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it 'create card original_text OK' do
-    card = Card.create(original_text: 'дом', translated_text: 'house',
-                       user_id: 1, block_id: 1)
-    expect(card.original_text).to eq('дом')
+    expect(create(:card).original_text).to eq('дом')
   end
 
   it 'create card translated_text OK' do
-    card = Card.create(original_text: 'дом', translated_text: 'house',
-                       user_id: 1, block_id: 1)
-    expect(card.translated_text).to eq('house')
+    expect(create(:card).translated_text).to eq('house')
   end
 
   it 'create card errors OK' do
-    card = Card.create(original_text: 'дом', translated_text: 'house',
-                       user_id: 1, block_id: 1)
-    expect(card.errors.any?).to be false
+    expect(create(:card).errors.any?).to be false
   end
 
   it 'set_review_date OK' do
-    card = Card.create(original_text: 'дом', translated_text: 'house',
-                       user_id: 1, block_id: 1)
-    expect(card.review_date.strftime('%Y-%m-%d %H:%M')).
+    expect(create(:card).review_date.strftime('%Y-%m-%d %H:%M')).
         to eq(Time.zone.now.strftime('%Y-%m-%d %H:%M'))
   end
 
   it 'check_translation Eng OK' do
-    check_translation(Card.create(original_text: 'дом', translated_text: 'house',
-                       user_id: 1, block_id: 1), 'house' :state, true)
+    check_translation(create(:card), 'house', :state, true)
   end
 
   it 'check_translation Eng NOT' do
-    check_translation(Card.create(original_text: 'дом', translated_text: 'house',
-                       user_id: 1, block_id: 1), 'RoR', :state, false)
+    check_translation(create(:card), 'RoR', :state, false)
   end
 
   it 'check_translation Rus OK' do
-    check_translation(Card.create(original_text: 'house', translated_text: 'дом',
-                       user_id: 1, block_id: 1), 'дом', :state, true)
+    check_translation(create(:card, :rus), 'дом', :state, true)
   end
 
   it 'check_translation Rus NOT' do
-    check_translation(Card.create(original_text: 'house', translated_text: 'дом',
-                       user_id: 1, block_id: 1), 'RoR', :state, false)
-  end
-
-  it 'check_translation full_downcase Eng OK' do
-    check_translation(Card.create(original_text: 'ДоМ', translated_text: 'hOuSe',
-                       user_id: 1, block_id: 1), 'HousE', :state, true)
-  end
-
-  it 'check_translation full_downcase Eng NOT' do
-    check_translation(Card.create(original_text: 'ДоМ', translated_text: 'hOuSe',
-                       user_id: 1, block_id: 1), 'RoR', :state, false)
-  end
-
-  it 'check_translation full_downcase Rus OK' do
-    check_translation(Card.create(original_text: 'hOuSe', translated_text: 'ДоМ',
-                       user_id: 1, block_id: 1), 'дОм', :state, true)
-  end
-
-  it 'check_translation full_downcase Rus NOT' do
-    check_translation(Card.create(original_text: 'hOuSe', translated_text: 'ДоМ',
-                       user_id: 1, block_id: 1), 'RoR', :state, false)
-  end
-
-  it 'create card witout user_id' do
-    card = Card.create(original_text: 'дом', translated_text: 'house',
-                       block_id: 1)
-    expect(card.errors[:user_id]).
-        to include('Ошибка ассоциации.')
-  end
-
-  it 'create card witout block_id' do
-    card = Card.create(original_text: 'дом', translated_text: 'house',
-                       user_id: 1)
-    expect(card.errors[:block_id]).
-        to include('Выберите колоду из выпадающего списка.')
+    check_translation(create(:card, :rus), 'RoR', :state, false)
   end
 
   it 'check_translation Eng OK levenshtein_distance' do
-    check_translation(Card.create(original_text: 'дом', translated_text: 'hous',
-                       user_id: 1, block_id: 1), 'house', :state, true)
+    check_translation(create(:card, :levenshtein_distance_1), 'house', :state, true)
   end
 
   it 'check_translation Eng OK levenshtein_distance=1' do
-    check_translation(Card.create(original_text: 'дом', translated_text: 'hous',
-                       user_id: 1, block_id: 1), 'house', :distance, 1)
+    check_translation(create(:card, :levenshtein_distance_1), 'house', :distance, 1)
   end
 
   it 'check_translation Rus OK levenshtein_distance' do
-    check_translation(Card.create(original_text: 'house', translated_text: 'до',
-                       user_id: 1, block_id: 1), 'дом', :state, true)
+    check_translation(create(:card, :rus_levenshtein_distance_1), 'дом', :state, true)
   end
 
   it 'check_translation Rus OK levenshtein_distance=1' do
-    check_translation(Card.create(original_text: 'house', translated_text: 'до',
-                       user_id: 1, block_id: 1), 'дом',:distance, 1)
+    check_translation(create(:card, :rus_levenshtein_distance_1), 'дом',:distance, 1)
   end
 
   it 'check_translation Eng NOT levenshtein_distance=2' do
-    check_translation(Card.create(original_text: 'дом', translated_text: 'hou',
-                       user_id: 1, block_id: 1), 'RoR', :state, false)
+    check_translation(create(:card, :levenshtein_distance_2), 'RoR', :state, false)
   end
 
   it 'check_translation Rus NOT levenshtein_distance=2' do
-    check_translation(Card.create(original_text: 'house', translated_text: 'д',
-                       user_id: 1, block_id: 1), 'RoR', :state, false)
+    check_translation(create(:card, :rus_levenshtein_distance_2), 'RoR', :state, false)
   end
 end
