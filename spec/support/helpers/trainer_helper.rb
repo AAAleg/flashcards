@@ -11,8 +11,6 @@ module TrainerHelper
     }
     Card.find(card.id)
   end
-
-
 end
 
 shared_examples 'training without cards' do
@@ -86,5 +84,60 @@ shared_examples 'training with one card' do
     fill_in 'user_translation', with: 'hous'
     click_button 'Проверить'
     expect(page).to have_content 'Вы ввели перевод c опечаткой.'
+  end
+end
+
+shared_examples 'incorrect translation' do
+  it "repeat=1 attempt=" do
+    card = create(:card, user: @user, block: @block, quality: 4)
+    card = check_review_card(card, 'RoR', attempt)
+    expect(card.interval).to eq(1)
+    expect(card.repeat).to eq(1)
+    expect(card.attempt).to eq(attempt + 1)
+    expect(card.efactor).to eq(efactor)
+    expect(card.quality).to eq(quality)
+  end
+end
+
+shared_examples 'correct translation' do
+  it 'repeat=1 quality=5' do
+    card = create(*card_factory)
+    card = check_review_card(card, 'house', 1)
+    expect(card.review_date.strftime('%Y-%m-%d %H:%M')).
+        to eq((Time.zone.now + interval.days).strftime('%Y-%m-%d %H:%M'))
+    expect(card.interval).to eq(expected_interval)
+    expect(card.repeat).to eq(expected_repeat)
+    expect(card.attempt).to eq(1)
+  end
+
+  it 'repeat=1 quality=5' do
+    card = create(*card_factory)
+    card = check_review_card(card, 'house', 1)
+    expect(card.efactor).to eq(efactors.first)
+    expect(card.quality).to eq(5)
+  end
+
+  it 'repeat=1 quality=4' do
+    card = create(*card_factory)
+    card = check_review_card(card, 'RoR', 1)
+    card = check_review_card(card, 'house', 1)
+    expect(card.efactor).to eq(efactors.second)
+    expect(card.quality).to eq(4)
+  end
+
+  it 'repeat=1 quality=3' do
+    card = create(*card_factory)
+    card = check_review_card(card, 'RoR', 2)
+    card = check_review_card(card, 'house', 1)
+    expect(card.efactor).to eq(efactors.third)
+    expect(card.quality).to eq(3)
+  end
+
+  it 'repeat=1 quality=3' do
+    card = create(*card_factory)
+    card = check_review_card(card, 'RoR', 3)
+    card = check_review_card(card, 'house', 1)
+    expect(card.efactor).to eq(1.3)
+    expect(card.quality).to eq(3)
   end
 end
