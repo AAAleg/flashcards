@@ -1,3 +1,7 @@
+def two_times_create(block, user)
+  2.times{create(block, user: user)}
+end
+
 FactoryGirl.define do
   factory :user do
     email 'test@test.com'
@@ -14,8 +18,7 @@ FactoryGirl.define do
 
     factory :user_with_two_blocks_without_cards do
       after(:create) do |user|
-        create(:block, user: user)
-        create(:block, user: user)
+        two_times_create(:block, user)
       end
     end
 
@@ -33,8 +36,7 @@ FactoryGirl.define do
 
     factory :user_with_two_blocks_and_one_card_in_each do
       after(:create) do |user|
-        create(:block_with_one_card, user: user)
-        create(:block_with_one_card, user: user)
+        two_times_create(:block_with_one_card, user)
       end
     end
 
@@ -47,8 +49,7 @@ FactoryGirl.define do
 
     factory :user_with_two_blocks_and_two_cards_in_each do
       after(:create) do |user|
-        create(:block_with_two_cards, user: user)
-        create(:block_with_two_cards, user: user)
+        two_times_create(:block_with_two_cards, user)
       end
     end
   end
