@@ -20,8 +20,7 @@ describe Dashboard::TrainerController do
       end
 
       it_behaves_like 'correct translation' do
-        let(:card_factory) { [:card, user: @user, block: @block, 
-                              interval: 6, repeat: 2, efactor: 2.6] }
+        let(:card_factory) { [:card, :second_check, user: @user, block: @block] }
         let(:expected_repeat) { 3 }
         let(:interval) { 6 }
         let(:expected_interval) { 16 }
@@ -29,8 +28,7 @@ describe Dashboard::TrainerController do
       end
 
       it_behaves_like 'correct translation' do
-        let(:card_factory) { [:card, user: @user, block: @block, 
-                              interval: 16, repeat:3, efactor: 2.7] }
+        let(:card_factory) { [:card, :third_check, user: @user, block: @block] }
         let(:expected_repeat) { 4 }
         let(:interval) { 16 }
         let(:expected_interval) { 45 }

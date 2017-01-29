@@ -70,8 +70,20 @@ FactoryGirl.define do
       translated_text 'hous'
     end
 
-    trait :'levenshtein_distance_2' do
+    trait :levenshtein_distance_2 do
       translated_text 'hou'
+    end
+
+    trait :second_check do
+      interval 6
+      repeat 2
+      efactor 2.6
+    end
+
+    trait :third_check do
+      interval 16
+      repeat 3 
+      efactor 2.7
     end
   end
 end
