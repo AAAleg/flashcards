@@ -4,9 +4,6 @@ require 'support/helpers/trainer_helper.rb'
 include LoginHelper
 include TrainerHelper
 
-update_review_date = ->(card){card.update_attribute(:review_date,
-                                                     Time.now - 3.days) }
-
 describe 'review cards without blocks' do
   it_behaves_like 'training without cards' do
     let(:user) { [:user] }
@@ -20,10 +17,7 @@ describe 'review cards with one block' do
 
   describe 'training with two cards' do
     before do
-      user = create(:user_with_one_block_and_two_cards)
-      user.cards.each(&update_review_date)
-      visit trainer_path
-      login('test@test.com', '12345', 'Войти')
+      prepare(:user_with_one_block_and_two_cards)
     end
 
     it_behaves_like 'training with two cards'
@@ -31,10 +25,7 @@ describe 'review cards with one block' do
 
   describe 'training with one card' do
     before do
-      user = create(:user_with_one_block_and_one_card)
-      user.cards.each(&update_review_date)
-      visit trainer_path
-      login('test@test.com', '12345', 'Войти')
+      prepare(:user_with_one_block_and_one_card)
     end
 
     it_behaves_like 'training with one card'
@@ -70,10 +61,7 @@ describe 'review cards with two blocks' do
 
   describe 'training with two cards' do
     before do
-      user = create(:user_with_two_blocks_and_one_card_in_each)
-      user.cards.each(&update_review_date)
-      visit trainer_path
-      login('test@test.com', '12345', 'Войти')
+      prepare(:user_with_two_blocks_and_one_card_in_each)
     end
 
     it_behaves_like 'training with two cards'
@@ -81,10 +69,7 @@ describe 'review cards with two blocks' do
 
   describe 'training with one card' do
     before do
-      user = create(:user_with_two_blocks_and_only_one_card)
-      user.cards.each(&update_review_date)
-      visit trainer_path
-      login('test@test.com', '12345', 'Войти')
+      prepare(:user_with_two_blocks_and_only_one_card)
     end
 
     it_behaves_like 'training with one card'
@@ -98,13 +83,7 @@ describe 'review cards with current_block' do
   
   describe 'training with two cards' do
     before do
-      user = create(:user_with_two_blocks_and_two_cards_in_each)
-      block = user.blocks.first
-      user.set_current_block(block)
-      card = user.cards.find_by(block_id: block.id)
-      card.update_attribute(:review_date, Time.now - 3.days)
-      visit trainer_path
-      login('test@test.com', '12345', 'Войти')
+      prepare_for_current_block(:user_with_two_blocks_and_two_cards_in_each)
     end
 
     it_behaves_like 'training with two cards'
@@ -112,13 +91,7 @@ describe 'review cards with current_block' do
 
   describe 'training with one card' do
     before do
-      user = create(:user_with_two_blocks_and_one_card_in_each)
-      block = user.blocks.first
-      user.set_current_block(block)
-      card = user.cards.find_by(block_id: block.id)
-      card.update_attribute(:review_date, Time.now - 3.days)
-      visit trainer_path
-      login('test@test.com', '12345', 'Войти')
+      prepare_for_current_block(:user_with_two_blocks_and_one_card_in_each)
     end
 
     it_behaves_like 'training with one card'
