@@ -19,21 +19,21 @@ describe Dashboard::TrainerController do
         let(:efactors) { [2.6, 2.18, 1.5] }
       end
 
-      # it_behaves_like 'correct translation' do
-      #   let(:card_factory) { [:card, :second_check, user: @user, block: @block] }
-      #   let(:expected_repeat) { 3 }
-      #   let(:interval) { 6 }
-      #   let(:expected_interval) { 16 }
-      #   let(:efactors) { [2.7, 2.28, 1.6] }
-      # end
+      it_behaves_like 'correct translation' do
+        let(:card_factory) { [:card, :second_check, user: @user, block: @block] }
+        let(:expected_repeat) { 3 }
+        let(:interval) { 6 }
+        let(:expected_interval) { 16 }
+        let(:efactors) { [2.7, 2.28, 1.6] }
+      end
 
-      # it_behaves_like 'correct translation' do
-      #   let(:card_factory) { [:card, :third_check, user: @user, block: @block] }
-      #   let(:expected_repeat) { 4 }
-      #   let(:interval) { 16 }
-      #   let(:expected_interval) { 45 }
-      #   let(:efactors) { [2.8, 2.38, 1.7] }
-      # end      
+      it_behaves_like 'correct translation' do
+        let(:card_factory) { [:card, :third_check, user: @user, block: @block] }
+        let(:expected_repeat) { 4 }
+        let(:interval) { 16 }
+        let(:expected_interval) { 45 }
+        let(:efactors) { [2.8, 2.38, 1.7] }
+      end      
 
       it 'repeat=1-3 quality=5' do
         card = create(:card, user: @user, block: @block,
