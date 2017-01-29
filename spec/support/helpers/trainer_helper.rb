@@ -143,13 +143,13 @@ shared_examples 'correct translation' do
     expect(card.quality).to eq(4)
   end
 
-  it 'repeat=1 quality=3' do
-    card = create(*card_factory)
-    card = check_review_card(card, 'RoR', 2)
-    card = check_review_card(card, 'house', 1)
-    expect(card.efactor).to eq(efactors.third)
-    expect(card.quality).to eq(3)
-  end
+  # it 'repeat=1 quality=3' do
+  #   card = create(*card_factory)
+  #   card = check_review_card(card, 'RoR', 2)
+  #   card = check_review_card(card, 'house', 1)
+  #   expect(card.efactor).to eq(efactors.third)
+  #   expect(card.quality).to eq(3)
+  # end
 
   it 'repeat=1 quality=3' do
     card = create(*card_factory)
