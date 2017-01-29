@@ -11,6 +11,24 @@ module TrainerHelper
     }
     Card.find(card.id)
   end
+
+  def prepare(user_factory)
+    user = create(user_factory)
+    user.cards.each{ |card| card.update_attribute(:review_date,
+                                                     Time.now - 3.days) }
+    visit trainer_path
+    login('test@test.com', '12345', 'Войти') 
+  end
+
+  def preapare_for_current_block(user_factory)
+    user = create(user_factory)
+    block = user.blocks.first
+    user.set_current_block(block)
+    card = user.cards.find_by(block_id: block.id)
+    card.update_attribute(:review_date, Time.now - 3.days)
+    visit trainer_path
+    login('test@test.com', '12345', 'Войти')
+  end
 end
 
 shared_examples 'training without cards' do
