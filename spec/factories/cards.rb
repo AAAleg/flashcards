@@ -79,11 +79,5 @@ FactoryGirl.define do
       repeat 2
       efactor 2.6
     end
-
-    trait :third_check do
-      interval 16
-      repeat 3 
-      efactor 2.7
-    end
   end
 end
