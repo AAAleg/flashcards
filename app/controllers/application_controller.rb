@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  respond_to :html, :js
   protect_from_forgery with: :exception
   before_action :set_locale
 

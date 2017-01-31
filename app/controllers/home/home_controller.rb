@@ -1,7 +1,11 @@
 class Home::HomeController < Home::BaseController
-  include Common
 
   def index
-    find_card
+    result = FindCard.call(
+      id: params[:id],
+      user: current_user
+    )
+
+    @card = result.card
   end
 end

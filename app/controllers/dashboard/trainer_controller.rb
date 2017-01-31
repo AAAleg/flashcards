@@ -1,17 +1,24 @@
 class Dashboard::TrainerController < Dashboard::BaseController
-  include Common
   
   def index
-    find_card
+    result = FindCard.call(
+      id: params[:id],
+      user: current_user
+    )
+
+    @card = result.card
   end
 
   def review_card
     @card = current_user.cards.find(params[:card_id])
 
-    check_result = @card.check_translation(trainer_params[:user_translation])
+    result = CheckTranslation.call(
+      card: @card,
+      translated_text: trainer_params[:user_translation]
+    )
 
-    if check_result[:state]
-      if check_result[:distance] == 0
+    if result.success?
+      if result.distance == 0
         flash[:notice] = t(:correct_translation_notice)
       else
         flash[:alert] = t 'translation_from_misprint_alert',

@@ -7,17 +7,18 @@ module TrainerHelper
 
   def check_review_card(card, translate, number)
     number.times {
-      put :review_card, params:{ card_id: card.id, user_translation: translate }
+      put :review_card, params: { card_id: card.id, user_translation: translate }
     }
     Card.find(card.id)
   end
 
   def prepare(user_factory)
     user = create(user_factory)
-    user.cards.each{ |card| card.update_attribute(:review_date,
-                                                     Time.now - 3.days) }
+    user.cards.each do |card| 
+      card.update_attribute(:review_date, Time.now - 3.days)
+    end
     visit trainer_path
-    login('test@test.com', '12345', 'Войти') 
+    login('test@test.com', '12345', 'Войти')
   end
 
   def prepare_for_current_block(user_factory)
@@ -53,8 +54,8 @@ shared_examples 'training with two cards' do
   it 'incorrect translation' do
     fill_in 'user_translation', with: 'RoR'
     click_button 'Проверить'
-    expect(page).
-        to have_content 'Вы ввели не верный перевод. Повторите попытку.'
+    expect(page)
+      .to have_content 'Вы ввели не верный перевод. Повторите попытку.'
   end
 
   it 'correct translation' do
@@ -72,8 +73,8 @@ shared_examples 'training with two cards' do
   it 'incorrect translation distance=2' do
     fill_in 'user_translation', with: 'hou'
     click_button 'Проверить'
-    expect(page).
-        to have_content 'Вы ввели не верный перевод. Повторите попытку.'
+    expect(page)
+      .to have_content 'Вы ввели не верный перевод. Повторите попытку.'
   end
 end
 
@@ -81,8 +82,8 @@ shared_examples 'training with one card' do
   it 'incorrect translation' do
     fill_in 'user_translation', with: 'RoR'
     click_button 'Проверить'
-    expect(page).
-        to have_content 'Вы ввели не верный перевод. Повторите попытку.'
+    expect(page)
+      .to have_content 'Вы ввели не верный перевод. Повторите попытку.'
   end
 
   it 'correct translation' do
@@ -94,8 +95,8 @@ shared_examples 'training with one card' do
   it 'incorrect translation distance=2' do
     fill_in 'user_translation', with: 'hou'
     click_button 'Проверить'
-    expect(page).
-        to have_content 'Вы ввели не верный перевод. Повторите попытку.'
+    expect(page)
+      .to have_content 'Вы ввели не верный перевод. Повторите попытку.'
   end
 
   it 'correct translation distance=1' do
@@ -106,7 +107,7 @@ shared_examples 'training with one card' do
 end
 
 shared_examples 'incorrect translation' do
-  it "repeat=1 attempt=" do
+  it 'repeat=1 attempt=' do
     card = create(:card, user: @user, block: @block, quality: 4)
     card = check_review_card(card, 'RoR', attempt)
     expect(card.interval).to eq(1)
@@ -121,8 +122,8 @@ shared_examples 'correct translation' do
   it 'repeat=1 quality=5' do
     card = create(*card_factory)
     card = check_review_card(card, 'house', 1)
-    expect(card.review_date.strftime('%Y-%m-%d %H:%M')).
-        to eq((Time.zone.now + interval.days).strftime('%Y-%m-%d %H:%M'))
+    expect(card.review_date.strftime('%Y-%m-%d %H:%M'))
+      .to eq((Time.zone.now + interval.days).strftime('%Y-%m-%d %H:%M'))
     expect(card.interval).to eq(expected_interval)
     expect(card.repeat).to eq(expected_repeat)
     expect(card.attempt).to eq(1)

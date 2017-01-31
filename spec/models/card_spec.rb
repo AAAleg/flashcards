@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'support/helpers/card_helper.rb'
-include CardHelper
 
 describe Card do
   it 'create card with empty original text' do
@@ -54,45 +52,5 @@ describe Card do
   it 'set_review_date OK' do
     expect(create(:card).review_date.strftime('%Y-%m-%d %H:%M')).
         to eq(Time.zone.now.strftime('%Y-%m-%d %H:%M'))
-  end
-
-  it 'check_translation Eng OK' do
-    check_translation(create(:card), 'house', :state, true)
-  end
-
-  it 'check_translation Eng NOT' do
-    check_translation(create(:card), 'RoR', :state, false)
-  end
-
-  it 'check_translation Rus OK' do
-    check_translation(create(:card, :rus), 'дом', :state, true)
-  end
-
-  it 'check_translation Rus NOT' do
-    check_translation(create(:card, :rus), 'RoR', :state, false)
-  end
-
-  it 'check_translation Eng OK levenshtein_distance' do
-    check_translation(create(:card, :levenshtein_distance_1), 'house', :state, true)
-  end
-
-  it 'check_translation Eng OK levenshtein_distance=1' do
-    check_translation(create(:card, :levenshtein_distance_1), 'house', :distance, 1)
-  end
-
-  it 'check_translation Rus OK levenshtein_distance' do
-    check_translation(create(:card, :rus_levenshtein_distance_1), 'дом', :state, true)
-  end
-
-  it 'check_translation Rus OK levenshtein_distance=1' do
-    check_translation(create(:card, :rus_levenshtein_distance_1), 'дом',:distance, 1)
-  end
-
-  it 'check_translation Eng NOT levenshtein_distance=2' do
-    check_translation(create(:card, :levenshtein_distance_2), 'RoR', :state, false)
-  end
-
-  it 'check_translation Rus NOT levenshtein_distance=2' do
-    check_translation(create(:card, :rus_levenshtein_distance_2), 'RoR', :state, false)
   end
 end
