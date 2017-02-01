@@ -1,5 +1,5 @@
 def two_times_create(block, user)
-  2.times{create(block, user: user)}
+  2.times { create(block, user: user) }
 end
 
 FactoryGirl.define do

@@ -4,7 +4,7 @@
 
 class SuperMemo
   class << self
-    def algorithm(interval, repeat, efactor, attempt, distance, 
+    def algorithm(interval, repeat, efactor, attempt, distance,
                   distance_limit)
       quality = set_quality(attempt, distance, distance_limit)
       efactor = set_efactor(efactor, quality)

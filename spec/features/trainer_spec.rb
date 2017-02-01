@@ -80,7 +80,7 @@ describe 'review cards with current_block' do
   it_behaves_like 'training without cards' do
     let(:user) { [:user_with_two_blocks_without_cards, current_block_id: 1] }
   end
-  
+
   describe 'training with two cards' do
     before do
       prepare_for_current_block(:user_with_two_blocks_and_two_cards_in_each)
