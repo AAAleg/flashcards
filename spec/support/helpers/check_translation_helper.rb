@@ -1,4 +1,4 @@
-module CheckTranslationHelper 
+module CheckTranslationHelper
   def check_translation(card, translation, param, result)
     check_result = CheckTranslation.call(
       card: card,

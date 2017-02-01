@@ -7,14 +7,15 @@ module TrainerHelper
 
   def check_review_card(card, translate, number)
     number.times {
-      put :review_card, params: { card_id: card.id, user_translation: translate }
+      put :review_card, params: { card_id: card.id, 
+                                  user_translation: translate }
     }
     Card.find(card.id)
   end
 
   def prepare(user_factory)
     user = create(user_factory)
-    user.cards.each do |card| 
+    user.cards.each do |card|
       card.update_attribute(:review_date, Time.now - 3.days)
     end
     visit trainer_path
