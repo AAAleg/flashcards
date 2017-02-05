@@ -1,8 +1,8 @@
 require 'super_memo'
-require 'string_helper'
-include StringHelper
 
 class Card < ApplicationRecord
+  include StringHelper
+
   belongs_to :user
   belongs_to :block
   validates :user_id, presence: true
